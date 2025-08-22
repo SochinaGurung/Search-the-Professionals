@@ -1,9 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./homepage.css";
-import type { AxiosResponse } from 'axios';
-import { getUserSearchApi } from '../../shared/config/api';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import type { AxiosResponse } from "axios";
+import { getUserSearchApi, getUserListApi } from "../../shared/config/api";
 
 interface User {
   _id: string;
@@ -17,41 +16,70 @@ interface UserListResponse {
 
 export default function Home() {
   const navigate = useNavigate();
-  const userData = localStorage.getItem("currentUser");
-  const username = userData ? JSON.parse(userData).username : "User";
-
-  const [loading, setLoading] = useState<boolean>(true);
-  const [search, setSearch] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [search, setSearch] = useState<string>("");
   const [userList, setUserList] = useState<User[]>([]);
   const [error, setError] = useState<string | null>(null);
 
+  // Fetches 4 users on the page
   useEffect(() => {
+    setLoading(true);
+    getUserListApi()
+      .then((res: AxiosResponse<UserListResponse>) => {
+        setUserList(res.data.users.slice(0, 4));
+        setError(null);
+      })
+      .catch((err) => {
+        setError("Failed to fetch users.");
+        console.error(err);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  // Search with debounce
+  useEffect(() => {
+    if (search.trim() === "") return;
+
     const delayDebounce = setTimeout(() => {
-      if (search.trim() !== "") {
-        setLoading(true);
-        getUserSearchApi(search)
-          .then((res: AxiosResponse<UserListResponse>) => {
+      setLoading(true);
+      getUserSearchApi(search)
+        .then((res: AxiosResponse<UserListResponse>) => {
+          if (res.data.users.length === 0) {
+            setError("User does not exist.");
+            setUserList([]);
+          } else {
             setUserList(res.data.users);
             setError(null);
-          })
-          .catch((err) => {
-            setError("Failed to fetch users.");
-            console.error(err);
-          })
-          .finally(() => {
-            setLoading(false);
-          });
-      } else {
-        setUserList([]); // Clear list when search is empty
-      }
-    }, 500); // debounce delay
+          }
+        })
+        .catch((err) => {
+          setError("Failed to fetch users.");
+          console.error(err);
+        })
+        .finally(() => setLoading(false));
+    }, 500);
 
     return () => clearTimeout(delayDebounce);
   }, [search]);
 
   function handleSearch(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setSearch(search);
+    if (!search.trim()) return;
+
+    setLoading(true);
+    getUserSearchApi(search)
+      .then((res: AxiosResponse<UserListResponse>) => {
+        if (res.data.users.length === 0) {
+          setError("User does not exist.");
+          setUserList([]);
+        } else {
+          setUserList(res.data.users);
+          setError(null);
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   const handleLogout = () => {
@@ -60,51 +88,47 @@ export default function Home() {
     navigate("/");
   };
 
-  const goToProfile = (username: string) => {
-    navigate(`/profile/${username}`);
-  };
-
   return (
     <div className="home-container">
       <div className="home-content">
-        <h1>Welcome, {username}</h1>
+        <h1>Search the Professionals</h1>
         <p>You have successfully logged in.</p>
 
+        {/* Search Form */}
         <form className="search-bar-wrapper" onSubmit={handleSearch}>
           <input
             type="text"
-            placeholder="Search"
+            placeholder="🔍 Search professionals..."
             className="search-input"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </form>
 
-        {loading ? (
-          <p>Loading users...</p>
-        ) : error ? (
-          <p className="error">{error}</p>
-        ) : (
-          <div className="profiles-grid">
-            {userList.length > 0 ? (
-              userList.map((user: User) => (
-                <div key={user._id} className="profile-card">
+        {/* Error Message */}
+        {error && <p className="error-message">{error}</p>}
+
+        {/* Users Grid */}
+        {!error && (
+          <>
+            <h2>Registered Professionals</h2>
+            <div className="profiles-grid">
+              {userList.map((user: User) => (
+                <div
+                  key={user._id}
+                  className="profile-card"
+                  onClick={() => navigate(`/profile/${user._id}`)}
+                >
                   <p>
-                    <strong>Username:</strong>{' '}
-                    <span
-                      className="clickable-username"
-                      onClick={() => goToProfile(user.username)}
-                    >
-                      {user.username}
-                    </span>
+                    <strong>Username:</strong> {user.username}
                   </p>
-                  <p><strong>Email:</strong> {user.email}</p>
+                  <p>
+                    <strong>Email:</strong> {user.email}
+                  </p>
                 </div>
-              ))
-            ) : (
-              <p>No users found.</p>
-            )}
-          </div>
+              ))}
+            </div>
+          </>
         )}
 
         <button className="logout-button" onClick={handleLogout}>

@@ -1,8 +1,6 @@
 import { Navigate } from "react-router-dom";
 import type{JSX} from "react";
 
-
-
 interface LoginGuardProps{
     children: JSX.Element;
 }

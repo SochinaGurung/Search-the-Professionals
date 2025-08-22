@@ -11,7 +11,7 @@ app.get('/', (_req,res)=>{
     res.send("This is homepage.");
 });
 
-// Starting the server port
+// Starting the server in the port
 app.listen(port,() =>{
     console.log(`Server started at PORT : ${port}`);
 });

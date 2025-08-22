@@ -1,63 +1,153 @@
-import './Profile.css';
-import { useParams } from 'react-router-dom';
+import "./Profile.css";
+import { useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import Experience from "../experience/experience";
+import Skills from "../skills/skills";
+import About from "../about/about";
+import { getProfileById, updateProfile } from '../../shared/config/api';
+import type { User } from '../../shared/Interface/User';
+import type { AxiosResponse } from 'axios';
+import defaultUser from '../../assets/user.png'; // default profile image
+
+interface ApiResponse {
+  user: User;
+}
 
 export default function Profile() {
+  const { id: profileUserId } = useParams<{ id: string }>();
+  const [loading, setLoading] = useState<boolean>(true);
+  const [userData, setUserData] = useState<User | null>(null);
+  const [isCurrentUser, setIsCurrentUser] = useState<boolean>(false);
+  const [selectedTab, setSelectedTab] = useState<string>("Overview");
 
-    const { username } = useParams();
-    return (
-        <>
-        {}
-        <div className="profile-card">
-            <div className="cover-photo">
-            <div className="user-info">
-                <h2>{username}</h2>
-                <p>245 connections</p>
-            </div>
-            </div>
+  const navigate = useNavigate();
 
-            <div className="tab-bar">
-            <button className="tab">Details</button>
-            <button className="tab">Skills</button>
-            <button className="tab">Posts</button>  
-            </div>
+  // Fetch profile user
+  useEffect(() => {
+    if (!profileUserId) return;
+    setLoading(true);
+
+    getProfileById(profileUserId)
+      .then((res: AxiosResponse<ApiResponse>) => {
+        setUserData(res.data.user);
+      })
+      .catch((error) => console.error('Failed to fetch profile:', error))
+      .finally(() => setLoading(false));
+  }, [profileUserId]);
+
+  useEffect(() => {
+    const currentUserStr = localStorage.getItem('currentUser');
+    if (!currentUserStr || !profileUserId) return;
+    const currentUser = JSON.parse(currentUserStr);
+    setIsCurrentUser(currentUser.id === profileUserId);
+  }, [profileUserId]);
+
+  if (loading) return <p className="loading">Loading profile...</p>;
+  if (!userData) return <p className="error">Profile not found.</p>;
+
+  // Helper function to update profile field in DB + UI
+  const handleUpdateProfile = async (field: keyof User, value: any) => {
+  if (!profileUserId || !isCurrentUser) return; // prevent editing if not owner
+  try {
+    await updateProfile(profileUserId, { [field]: value });
+    setUserData(prev => prev ? { ...prev, [field]: value } : null);
+  } catch (err) {
+    console.error(`Failed to update ${field}:`, err);
+  }
+};
+
+  return (
+    <div className="profile-container">
+      {/* Profile Header */}
+      <div className="profile-card">
+        <div className="cover-photo">
+          <img
+            src={defaultUser}
+            width="150px"
+            alt="Profile"
+            className="profile-img"
+          />
+          <div className="user-info">
+            <h2>{userData.fullName || "No Name"}</h2>
+            <p>{userData.profession || "No Profession"}</p>
+          </div>
         </div>
 
-        <div className="profile-section">
-            <h3>About</h3>
-            <p>
-            Dedicated to advancing in tech industry through meaningful contributions to innovative
-            projects and forward-thinking teams. Committed to refining technical expertise and eager
-            to learn and embrace new challenges, and consistently delivering high-quality solutions
-            that support organizational growth and technological advancement
-            </p>
+        {/* Tabs */}
+        <div className="tab-bar">
+          {["Overview", "Experience", "Skills", "Contact"].map(tab => (
+            <button
+              key={tab}
+              className={`tab ${selectedTab === tab ? "active" : ""}`}
+              onClick={() => setSelectedTab(tab)}
+            >
+              {tab}
+            </button>
+          ))}
         </div>
+      </div>
 
-        
-        <div className="profile-section">
-            <h3>Experience</h3>
-            <ul>
-            <li><strong>UX/UI Designer</strong> – JyotiTech (2012 – 2014)</li>
-            <li><strong>SEO Intern</strong> – TechHub (2017 - 2019)</li>
-            <li><strong>Front-End Developer</strong> – TechnoLab (2020 – 2023)</li>
-            <li><strong>Front-End Developer</strong> – OfficeTech (2023 – present)</li>
+      {/* Tab Content */}
+      <div className="profile-section">
+        {/* Overview / About */}
+        {selectedTab === "Overview" && (
+          <About
+            aboutText={userData.about}
+            isCurrentUser={isCurrentUser}
+            onSave={async (newAbout) => {
+              await handleUpdateProfile("about", newAbout);
+            }}
+          />
+        )}
 
-
-            </ul>
+       {/* Experience */}
+      {selectedTab === "Experience" && (
+        <div className="experience-tab">
+          <Experience
+            experiences={userData.experience || []}
+            isCurrentUser={isCurrentUser}
+            onAdd={async (newExp) => {
+              // Add new experience to the list
+              const updatedList = [...(userData.experience || []), newExp];
+              await handleUpdateProfile("experience", updatedList);
+            }}
+            onEdit={async (id, updatedExp) => {
+              // Edit an existing experience
+              const updatedList = (userData.experience || []).map((exp) =>
+                exp._id === id ? { ...exp, ...updatedExp } : exp
+              );
+              await handleUpdateProfile("experience", updatedList);
+            }}
+          />
         </div>
+      )}
 
-        {/* Skills Section */}
-        <div className="profile-section">
-            <h3>Skills</h3>
-            <ul className="skills-list">
-            <li>HTML/CSS</li>
-            <li>Java</li>
-            <li>React.js</li>
-            <li>Python</li>
-            <li>JavaScript</li>
-            <li>Wireframing</li>
-            <li>Database Management</li>
-            </ul>
-        </div>
-        </>
-    );
+
+        {/* Skills */}
+        {selectedTab === "Skills" && (
+          <Skills
+            skills={userData.skills || []}
+            isCurrentUser={isCurrentUser}
+            onAddSkill={async (skill) => {
+              const updatedSkills = [...(userData.skills || []), skill];
+              await handleUpdateProfile("skills", updatedSkills);
+            }}
+            onDeleteSkill={async (skill) => {
+              const updatedSkills = (userData.skills || []).filter(s => s !== skill);
+              await handleUpdateProfile("skills", updatedSkills);
+            }}
+          />
+        )}
+
+        {/* Contact */}
+        {selectedTab === "Contact" && (
+          <div>
+            <h3>Contact</h3>
+            <p>📧 {userData.email || "example@email.com"}</p>
+            <p>📞 +977-9800000000</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }

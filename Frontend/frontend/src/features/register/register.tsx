@@ -21,37 +21,59 @@ export default function Register() {
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  setLoading(true);
-  setErrorMessage('');
+    e.preventDefault();
+    setLoading(true);
+    setErrorMessage('');
 
-  try {
-    const res: AxiosResponse = await registerApi(formData);
-    localStorage.setItem('token', res.data.token);
-    localStorage.setItem('currentUser', JSON.stringify(res.data.user));
-    // Redirect to profile form page after registration
-    navigate('/profileform');
+    try {
+      const res: AxiosResponse = await registerApi(formData);
+      localStorage.setItem('token', res.data.token);
+      localStorage.setItem('currentUser', JSON.stringify(res.data.user));
+      navigate('/');
 
-  } catch (error: unknown) {
-    const axiosError = error as AxiosError;
-    console.error(axiosError);
-    setErrorMessage('Registration failed. Please try again.');
-  
-} finally {
-    setLoading(false);
-  }
-};
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
+      console.error(axiosError);
+      setErrorMessage('Registration failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="register-container">
       <form onSubmit={handleSubmit}>
-        <label className="RegisterTitle">REGISTER</label>
+        <h2 className="RegisterTitle">REGISTER</h2>
 
-        <input name="username" value={formData.username} onChange={handleChange} placeholder="Username" type="text"/>
+        <label htmlFor="username">Username</label>
+        <input
+          id="username"
+          name="username"
+          value={formData.username}
+          onChange={handleChange}
+          placeholder="Enter your name"
+          type="text"
+        />
 
-        <input name="password" value={formData.password} onChange={handleChange} placeholder="Password" type="password"/>
+        <label htmlFor="password">Password</label>
+        <input
+          id="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          placeholder="Enter your password"
+          type="password"
+        />
 
-        <input name="email" value={formData.email} onChange={handleChange} placeholder="Email" type="email"/>
+        <label htmlFor="email">Email</label>
+        <input
+          id="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          placeholder="Enter your email"
+          type="email"
+        />
 
         {errorMessage && <p className="error">{errorMessage}</p>}
 

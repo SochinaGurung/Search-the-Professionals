@@ -1,47 +1,74 @@
-.RegisterTitle{
-  text-align: center;
-  font-size: 2rem;
-  font-weight: bold;
-}
-
+/* Container styling */
 .register-container {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  
-}
-
-form {
-  background: white;
-  padding: 2rem 2.5rem;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-  min-width: 300px;
-}
-input {
-  margin-top: 20px;
-  padding: 10px;
-  border: 1px solid #ccc;
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 30px;
+  border: 1px solid #ddd;
   border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  background: #12315d;
+  font-family: Arial, sans-serif;
 }
 
-button {
-  padding: 0.75rem;
-  background-color: black;
+/* Form title */
+.RegisterTitle {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 28px;
   color: white;
-  font-size: 1rem;
+}
+
+/* Label styling */
+label {
+  display: block;
+  margin-bottom: 5px;
   font-weight: bold;
+  color: white;
+}
+
+/* Input styling */
+input {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+input:focus {
+  border-color: #0073b1; /* nice blue focus color */
+  outline: none;
+  box-shadow: 0 0 5px rgba(0,115,177,0.3);
+}
+
+/* Error message */
+.error {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* Submit button */
+button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  background-color: #0073b1;
+  color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
+  font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s;
-  margin-top: 20px;
 }
 
-button:hover {
-  background-color: rgb(214, 214, 222);
+button[type="submit"]:hover:not(:disabled) {
+  background-color: #005f8e;
+}
+
+button[disabled] {
+  background-color: #999;
+  cursor: not-allowed;
 }

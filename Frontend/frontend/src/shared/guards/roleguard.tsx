@@ -1,7 +1,13 @@
-import React from 'react';
 import { Navigate } from "react-router-dom";
 import type { JSX } from "react";
-import type {  User } from '../Interface/User';
+
+interface User{
+    role:string;
+    username:string;
+    email:string;
+    _id:string;
+    //can add other properties if needed
+}
 
 interface RoleGuardProps {
     allowedRoles: string[];
