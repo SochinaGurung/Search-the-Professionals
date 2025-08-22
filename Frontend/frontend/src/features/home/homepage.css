@@ -17,6 +17,27 @@ body {
   width: 80%;
   max-width: 700px;
 }
+.header-with-profile {
+  display: flex;
+  justify-content: space-between; /* heading on left, button on right */
+  align-items: center;            /* vertically center button with heading */
+  margin-bottom: 16px;            /* spacing below the header */
+}
+
+.profile-btn {
+  padding: 6px 12px;
+  font-size: 16px;
+  background-color:  #21a1f1;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.profile-btn:hover {
+  background-color: #36637c;;
+}
+
 
 h1 {
   color: #0073b1;

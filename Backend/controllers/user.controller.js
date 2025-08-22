@@ -19,7 +19,11 @@ export async function searchUsers(req, res){
     try{
         const query=req.query.q?.toString() || "";
         const users=await User.find({
-            username:{$regex: query, $options: "i"}
+          $or:[
+            {username:{$regex: query, $options: "i"} },
+            { skills: { $regex: query, $options: "i" } },
+            {profession:{$regex: query,$options:"i" }}   
+          ]
         });
         res.status(200).json({message:"Search Completed",users});
     }catch(error){
@@ -29,12 +33,13 @@ export async function searchUsers(req, res){
 
 export async function profileForm(req, res) {
   console.log("req.body >>>", req.body); 
-   
-  const { fullName, profession,specialization, skills } = req.body;  
-  
+
+  const { fullName, address, profession, specialization, skills } = req.body;  // ✅ include address
+
   try {
     const profileCompleted =
-      fullName?.trim()!=="" &&
+      fullName?.trim() !== "" &&
+      address?.trim() !== "" &&
       profession?.trim() !== "" &&
       specialization?.trim() !== "" &&
       Array.isArray(skills) &&
@@ -44,18 +49,17 @@ export async function profileForm(req, res) {
       req.user.userId,
       {
         fullName,
-    
+        address,
         profession,
         specialization, 
         skills,
         profileCompleted,
-       
       },
       { new: true }
     );
-
     res.json({ message: "Profile updated", user });
   } catch (err) {
+    console.error("Profile update error:", err); // log real error
     res.status(500).json({ message: "Error updating profile" });
   }
 }

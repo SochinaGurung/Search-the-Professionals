@@ -21,7 +21,7 @@ export const getProfileById = (id: string) => {
     return axiosInstance.get(`/user/profile/${id}`);
 };
 
-export const profileForm = (data: {fullName: string;  profession: string; specialization: string; skills: string[] }) => {
+export const profileForm = (data: {fullName: string; address: string;  profession: string; specialization: string; skills: string[] }) => {
   return axiosInstance.post('/user/profileForm', data);
 };
 

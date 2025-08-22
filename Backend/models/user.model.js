@@ -26,7 +26,7 @@ const userSchema = new Schema({
     },
     password: String,
     email:String,
-
+    address: String,
     about:{
         type: String,
         default:""

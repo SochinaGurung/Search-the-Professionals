@@ -29,6 +29,7 @@ export default function Register() {
       const res: AxiosResponse = await registerApi(formData);
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('currentUser', JSON.stringify(res.data.user));
+
       navigate('/');
 
     } catch (error: unknown) {

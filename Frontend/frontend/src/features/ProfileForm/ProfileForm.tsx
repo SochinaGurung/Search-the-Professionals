@@ -5,6 +5,7 @@ import "./Profileform.css";
 
 export default function ProfileForm() {
   const [fullName, setfullName] = useState("");
+  const [address, setAddress] = useState("");
   const [profession, setProfession] = useState("");
   const [specialization, setSpecialization] = useState("");
   const [skills, setSkills] = useState<string[]>([]);
@@ -14,13 +15,13 @@ export default function ProfileForm() {
   const handleSubmit = async (e: FormEvent) => {
   e.preventDefault();
 
-  if (!fullName  || !profession || !specialization || skills.length === 0) {
+  if (!fullName || !profession || !specialization || skills.length === 0) {
     alert("Please complete all fields before submitting.");
     return;
   }
 
   try {
-    const res = await profileForm({ fullName, profession, specialization, skills });
+    const res = await profileForm({ fullName, address, profession, specialization, skills });
 
     if (res.data.user.profileCompleted) {
       localStorage.setItem("currentUser", JSON.stringify(res.data.user));
@@ -45,6 +46,12 @@ export default function ProfileForm() {
           placeholder="Full Name"
           value={fullName}
           onChange={(e) => setfullName(e.target.value)}
+        />
+         <input
+          className="form-input"
+          placeholder="Address"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
         />
         
         <input

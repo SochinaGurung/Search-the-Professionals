@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./homepage.css";
+import "./header.tsx";
 import type { AxiosResponse } from "axios";
 import { getUserSearchApi, getUserListApi } from "../../shared/config/api";
 
@@ -20,6 +21,16 @@ export default function Home() {
   const [search, setSearch] = useState<string>("");
   const [userList, setUserList] = useState<User[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const currentUserStr = localStorage.getItem("currentUser");
+  const currentUser = currentUserStr ? JSON.parse(currentUserStr) : null;
+  
+  const goToProfile = () => {
+    if (currentUser) {
+      navigate(`/profile/${currentUser.id}`); // or currentUser._id depending on your backend
+    } else {
+      alert("User not logged in");
+    }
+  };
 
   // Fetches 4 users on the page
   useEffect(() => {
@@ -91,7 +102,12 @@ export default function Home() {
   return (
     <div className="home-container">
       <div className="home-content">
-        <h1>Search the Professionals</h1>
+        <div className="header-with-profile">
+          <h1>Search the Professionals</h1>
+          <button className="profile-btn" onClick={goToProfile}>
+            👤 Profile
+          </button>
+        </div>
         <p>You have successfully logged in.</p>
 
         {/* Search Form */}

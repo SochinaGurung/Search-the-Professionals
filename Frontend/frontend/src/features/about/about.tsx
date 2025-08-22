@@ -13,6 +13,7 @@ export default function About({ aboutText, isCurrentUser, onSave }: AboutProps) 
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  
   useEffect(() => {
     setNewAbout(aboutText || '');
   }, [aboutText]);

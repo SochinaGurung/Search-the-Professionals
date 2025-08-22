@@ -10,8 +10,8 @@ export interface User {
   username: string;
   email: string;
   fullName:string;
-  about?: string;
   address:string;
+  about?: string;
   profession: string,
   profileCompleted: boolean,
   skills?: string[];

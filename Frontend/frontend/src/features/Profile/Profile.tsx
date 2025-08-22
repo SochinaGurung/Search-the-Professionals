@@ -70,6 +70,8 @@ export default function Profile() {
           <div className="user-info">
             <h2>{userData.fullName || "No Name"}</h2>
             <p>{userData.profession || "No Profession"}</p>
+            <p> 📍{userData.address }</p>
+
           </div>
         </div>
 

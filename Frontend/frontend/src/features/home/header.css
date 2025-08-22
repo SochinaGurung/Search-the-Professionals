@@ -1,0 +1,43 @@
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 2rem;
+  background-color: #1e1e1e;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.logo h1 {
+  cursor: pointer;
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: #3a3a3a;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.2s ease;
+}
+
+.nav-btn:hover {
+  background-color: #555;
+}
+
+.nav-btn.logout {
+  background-color: #e74c3c;
+}
+
+.nav-btn.logout:hover {
+  background-color: #c0392b;
+}
+
