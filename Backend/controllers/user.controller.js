@@ -21,6 +21,7 @@ export async function searchUsers(req, res){
         const users=await User.find({
           $or:[
             {username:{$regex: query, $options: "i"} },
+            {fullName:{$regex: query, $options: "i"} },
             { skills: { $regex: query, $options: "i" } },
             {profession:{$regex: query,$options:"i" }}   
           ]
@@ -34,7 +35,7 @@ export async function searchUsers(req, res){
 export async function profileForm(req, res) {
   console.log("req.body >>>", req.body); 
 
-  const { fullName, address, profession, specialization, skills } = req.body;  // ✅ include address
+  const { fullName, address, profession, specialization, skills, contact, linkedIn, instagram} = req.body;  
 
   try {
     const profileCompleted =
@@ -42,19 +43,31 @@ export async function profileForm(req, res) {
       address?.trim() !== "" &&
       profession?.trim() !== "" &&
       specialization?.trim() !== "" &&
+      contact?.trim() !== "" &&
       Array.isArray(skills) &&
       skills.length > 0;
 
+    const updateData = {
+      fullName,
+      address,
+      profession,
+      specialization, 
+      contact,
+      skills,
+      profileCompleted,
+    };
+
+    // Add social media links if provided
+    if (linkedIn !== undefined) {
+      updateData.linkedIn = linkedIn;
+    }
+    if (instagram !== undefined) {
+      updateData.instagram = instagram;
+    }
+
     const user = await User.findByIdAndUpdate(
       req.user.userId,
-      {
-        fullName,
-        address,
-        profession,
-        specialization, 
-        skills,
-        profileCompleted,
-      },
+      updateData,
       { new: true }
     );
     res.json({ message: "Profile updated", user });
