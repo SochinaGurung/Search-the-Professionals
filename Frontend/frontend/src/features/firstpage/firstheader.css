@@ -1,0 +1,93 @@
+/* Matches home header / app-header: white bg, border, shadow, sticky */
+.landing-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.landing-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.logo-icon {
+  background: #0073b1;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #0073b1;
+  margin: 0;
+}
+
+.landing-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.landing-btn {
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.landing-btn:hover {
+  transform: translateY(-1px);
+}
+
+.login-btn {
+  background: #0073b1;
+  color: white;
+}
+
+.login-btn:hover {
+  background: #005885;
+}
+
+.register-btn {
+  background: white;
+  color: #0073b1;
+  border: 1px solid #0073b1;
+}
+
+.register-btn:hover {
+  background: #e8f5ff;
+  border-color: #005885;
+  color: #005885;
+}
+
+@media (max-width: 700px) {
+  .landing-header {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1rem;
+  }
+
+  .landing-nav {
+    margin-top: 10px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}

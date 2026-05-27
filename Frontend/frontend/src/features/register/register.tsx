@@ -1,7 +1,7 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import './register.css';
 import { registerApi } from '../../shared/config/api';
-import { type AxiosResponse, type AxiosError } from 'axios';
+import { type AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
@@ -26,16 +26,19 @@ export default function Register() {
     setErrorMessage('');
 
     try {
-      const res: AxiosResponse = await registerApi(formData);
-      localStorage.setItem('token', res.data.token);
-      localStorage.setItem('currentUser', JSON.stringify(res.data.user));
-
-      navigate('/');
-
+      await registerApi(formData);
+      alert('Registration successful! Please log in.');
+      navigate('/Login');
     } catch (error: unknown) {
-      const axiosError = error as AxiosError;
+      const axiosError = error as AxiosError<{ message?: string }>;
       console.error(axiosError);
-      setErrorMessage('Registration failed. Please try again.');
+      if (!axiosError.response) {
+        setErrorMessage('Cannot reach the server. Make sure the backend is running on port 3000.');
+        return;
+      }
+      setErrorMessage(
+        axiosError.response.data?.message || 'Registration failed. Please try again.'
+      );
     } finally {
       setLoading(false);
     }
@@ -54,6 +57,7 @@ export default function Register() {
           onChange={handleChange}
           placeholder="Enter your name"
           type="text"
+          required
         />
 
         <label htmlFor="password">Password</label>
@@ -64,8 +68,9 @@ export default function Register() {
           onChange={handleChange}
           placeholder="Enter your password"
           type="password"
+          required
         />
-
+        
         <label htmlFor="email">Email</label>
         <input
           id="email"
@@ -74,6 +79,7 @@ export default function Register() {
           onChange={handleChange}
           placeholder="Enter your email"
           type="email"
+          required
         />
 
         {errorMessage && <p className="error">{errorMessage}</p>}

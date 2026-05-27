@@ -1,0 +1,64 @@
+.tictactoe-container {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #b1b8c7;  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.tictactoe-container h3 {
+  color:#243250;
+  margin-bottom: 15px;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 80px);
+  grid-template-rows: repeat(3, 80px);
+  gap: 10px;
+  justify-content: center;
+  margin: 15px 0;
+}
+
+.cell {
+  background-color: #243250;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fff;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.cell:hover {
+  transform: scale(1.1);
+  background-color: #728abf;
+}
+
+.result {
+  font-size: 18px;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.reset-btn {
+  margin-top: 15px;
+  padding: 7px 20px;
+  font-size: 14px;
+  border: none;
+  border-radius: 8px;
+  background-color: #5c74c3;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.reset-btn:hover {
+  transform: scale(1.05);
+  background-color:  #060e28;
+}

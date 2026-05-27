@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import './skills.css';
 
 interface SkillsProps {
@@ -9,7 +9,6 @@ interface SkillsProps {
 }
 
 export default function Skills({ skills = [], isCurrentUser, onAddSkill, onDeleteSkill }: SkillsProps) {
-  const [adding, setAdding] = useState(false);
   const [newSkill, setNewSkill] = useState("");
   const [editingSkill, setEditingSkill] = useState<string | null>(null);
   const [confirmDeleteSkill, setConfirmDeleteSkill] = useState<string | null>(null);
@@ -23,7 +22,6 @@ export default function Skills({ skills = [], isCurrentUser, onAddSkill, onDelet
     try {
       await onAddSkill(newSkill.trim());
       setNewSkill("");
-      setAdding(false);
     } catch (e) {
       setError("Failed to add skill");
     } finally {
@@ -49,53 +47,60 @@ export default function Skills({ skills = [], isCurrentUser, onAddSkill, onDelet
     <div className="profile-section">
       <div className="skills-header">
         <h3>Skills</h3>
-        {isCurrentUser && !adding && !editingSkill && (
-          <button className="add-skill-btn" onClick={() => setAdding(true)}>+</button>
-        )}
       </div>
 
-      {adding && (
+      {isCurrentUser && (
         <div className="add-skill-form">
           <input
             type="text"
             value={newSkill}
             onChange={(e) => setNewSkill(e.target.value)}
-            placeholder="Enter skill"
+            placeholder="Add a skill..."
             disabled={loading}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleAddSkill();
+              }
+            }}
           />
-          <button onClick={handleAddSkill} disabled={loading}>Save</button>
-          <button onClick={() => setAdding(false)} disabled={loading}>Cancel</button>
+          <button onClick={handleAddSkill} disabled={loading || !newSkill.trim()}>
+            Add
+          </button>
           {error && <p className="error">{error}</p>}
         </div>
       )}
 
-      {skills.length > 0 && (
+      {skills.length > 0 ? (
         <ul className="skills-list">
           {skills.map((skill) => (
-            <li key={skill}>
-              {skill}
+            <li key={skill} className="skill-item">
+              <span>{skill}</span>
               {isCurrentUser && (
-                <>
-                  {!editingSkill && <button onClick={() => setEditingSkill(skill)}>✏️</button>}
-                  {editingSkill === skill && (
-                    <>
-                      <button onClick={() => setConfirmDeleteSkill(skill)}>Delete</button>
-                      <button onClick={() => setEditingSkill(null)}>Cancel</button>
-                    </>
-                  )}
-                </>
+                <button 
+                  className="delete-skill-btn"
+                  onClick={() => setConfirmDeleteSkill(skill)}
+                  title="Delete skill"
+                >
+                  ×
+                </button>
               )}
             </li>
           ))}
         </ul>
+      ) : (
+        isCurrentUser && <p className="no-skills">Add your skills above</p>
       )}
 
       {/* Confirmation popup */}
       {confirmDeleteSkill && (
-        <div className="popup">
-          <p>Do you want to delete skill "{confirmDeleteSkill}"?</p>
-          <button onClick={() => setConfirmDeleteSkill(null)}>Not now</button>
-          <button onClick={() => handleDeleteSkill(confirmDeleteSkill)}>Delete</button>
+        <div className="popup-overlay" onClick={() => setConfirmDeleteSkill(null)}>
+          <div className="popup" onClick={(e) => e.stopPropagation()}>
+            <p>Delete skill "{confirmDeleteSkill}"?</p>
+            <div className="popup-buttons">
+              <button onClick={() => setConfirmDeleteSkill(null)}>Cancel</button>
+              <button onClick={() => handleDeleteSkill(confirmDeleteSkill)} className="delete-btn">Delete</button>
+            </div>
+          </div>
         </div>
       )}
     </div>

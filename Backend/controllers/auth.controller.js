@@ -5,15 +5,22 @@ import User from "../models/user.model.js";
 //  REGISTER FUNCTION
 export async function register(req, res) {
     try {
-        const { username, password , email} = req.body;
+        const username = req.body.username?.trim();
+        const password = req.body.password;
+        const email = req.body.email?.trim().toLowerCase();
+
+        if (!username || !password || !email) {
+            return res.status(400).json({ message: 'Username, password, and email are required' });
+        }
+
         const existing = await User.findOne({ username });
         if (existing) {
             return res.status(400).json({ message: 'Username already exists' });
         }
 
-        const existingEmail=await User.findOne({ email});
-        if(existingEmail){
-            return res.status(400).json({message: 'Email already exist'})
+        const existingEmail = await User.findOne({ email });
+        if (existingEmail) {
+            return res.status(400).json({ message: 'Email already exists' });
         }
         const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -31,7 +38,8 @@ export async function register(req, res) {
 //  LOGIN FUNCTION
 export async function login(req, res) {
     try {
-        const { username, password } = req.body;
+        const username = req.body.username?.trim();
+        const password = req.body.password;
 
         if (!username || !password) {
             return res.status(400).json({ message: "Please provide username and password" });

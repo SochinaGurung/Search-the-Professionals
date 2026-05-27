@@ -6,7 +6,8 @@ export interface Experience {
 }
 
 export interface User {
-    _id: string;
+  specialization: string;
+  _id: string;
   username: string;
   email: string;
   fullName:string;
@@ -15,6 +16,12 @@ export interface User {
   profession: string,
   profileCompleted: boolean,
   skills?: string[];
-   experience?: Experience[];
-  
+  contact?: string;
+  experience?: Experience[];
+   profilePicture?: {
+    url: string;
+    public_id?: string;
+  };
+  linkedIn?: string;
+  instagram?: string;
 }

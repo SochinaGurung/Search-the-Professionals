@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { BACKEND_API_URL } from './backend';
 
 const axiosInstance = axios.create(
     {
-        baseURL :'http://localhost:3000/api',
+        baseURL: BACKEND_API_URL,
         withCredentials:true,
     });
 

@@ -1,43 +1,136 @@
-.app-header {
+.app-header { 
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.8rem 2rem;
-  background-color: #1e1e1e;
-  color: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  padding: 1rem 2rem;
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-.logo h1 {
+.head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.name p {
   cursor: pointer;
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #0073b1;
+}
+
+.logo-icon {
+  background: #0073b1;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  background-color: transparent;
 }
 
 .nav-links {
   display: flex;
-  gap: 1rem;
+  align-items: center;
+  gap: 12px;
 }
 
-.nav-btn {
-  padding: 0.5rem 1rem;
-  border: none;
-  background-color: #3a3a3a;
-  color: #fff;
+.profile-btn {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0073b1;
   cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.2s ease;
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: #f0f8ff;
+  border: 1px solid #0073b1;
+  transition: all 0.2s ease;
 }
 
-.nav-btn:hover {
-  background-color: #555;
+.profile-btn:hover {
+  background: #e0f0ff;
+  transform: translateY(-1px);
 }
 
-.nav-btn.logout {
-  background-color: #e74c3c;
+.logout-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  background-color: #0073b1;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-size: 0.95rem;
 }
 
-.nav-btn.logout:hover {
-  background-color: #c0392b;
+.logout-button:hover {
+  background-color: #005885;
+}
+
+.game-icon-btn {
+  background: #e8f5ff;
+  color: #0073b1;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-icon-btn:hover {
+  background: #d0e8ff;
+  transform: translateY(-1px);
+}
+
+.games-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 45px;
+  background-color: white;
+  color: #333;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  width: 180px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  padding: 8px 0;
+}
+
+.dropdown-menu p {
+  margin: 0;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-size: 0.9rem;
+}
+
+.dropdown-menu p:hover {
+  background-color: #f4f6f8;
+  color: #0073b1;
 }
 

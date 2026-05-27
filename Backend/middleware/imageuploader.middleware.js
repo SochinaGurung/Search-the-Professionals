@@ -7,7 +7,7 @@ export const upload=multer({
     storage,
     limits:{fileSize:5*1024*1024},
     fileFilter:(_req, file, next)=>{
-        const ok=['img/jpeg', 'image/png'].includes(file.mimetype);
+        const ok=['image/jpeg', 'image/png'].includes(file.mimetype);
         next(ok?null: new Error('Only JPG and PNG allowed'), ok);
     },
 });
@@ -15,7 +15,7 @@ export const upload=multer({
 export function uploadBufferToCloudinary(buffer, options={}){
     return new Promise((resolve, reject)=>{
         const stream=cloudinary.uploader.upload_stream(
-            {resource_type:'image'.replace.call.options},
+            options,
             (err, result)=>(err?reject(err):resolve(result))
         );
         stream.end(buffer);

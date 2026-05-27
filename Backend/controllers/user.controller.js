@@ -69,7 +69,7 @@ export async function profileForm(req, res) {
       req.user.userId,
       updateData,
       { new: true }
-    );
+    ).select('-password');
     res.json({ message: "Profile updated", user });
   } catch (err) {
     console.error("Profile update error:", err); // log real error
@@ -77,11 +77,26 @@ export async function profileForm(req, res) {
   }
 }
 
-export async function profile(req, res) {
+export async function getProfileById(req, res) {
+  try {
+    const user = await User.findById(req.params.id).select('-password');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json({ user });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Failed to fetch profile',
+      error: error.message
+    });
+  }
+}
+
+export async function updateProfile(req, res) {
   const userId = req.params.id;
   const updateData = req.body;
   try {
-    const user = await User.findByIdAndUpdate(userId, updateData, { new: true })
+    const user = await User.findByIdAndUpdate(userId, updateData, { new: true }).select('-password');
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }

@@ -1,0 +1,168 @@
+.contact-section {
+  width: 100%;
+}
+
+.contact-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.contact-header h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.edit-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  transition: transform 0.2s;
+}
+
+.edit-btn:hover {
+  transform: scale(1.1);
+}
+
+.contact-info {
+  margin-bottom: 1rem;
+}
+
+.contact-info p {
+  margin: 0.5rem 0;
+  color: #333;
+}
+
+.contact-edit-form {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.contact-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.contact-input:focus {
+  border-color: #0073b1;
+}
+
+.contact-input:disabled {
+  background-color: #e5e7eb;
+  cursor: not-allowed;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.save-btn,
+.cancel-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.save-btn {
+  background-color: #0073b1;
+  color: white;
+}
+
+.save-btn:hover:not(:disabled) {
+  background-color: #005885;
+}
+
+.save-btn:disabled {
+  background-color: #cbd5e1;
+  cursor: not-allowed;
+}
+
+.cancel-btn {
+  background-color: #e5e7eb;
+  color: #333;
+}
+
+.cancel-btn:hover:not(:disabled) {
+  background-color: #d1d5db;
+}
+
+.error-message {
+  color: #dc2626;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.icon {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.social-icon {
+  display: inline-block;
+  transition: transform 0.2s;
+}
+
+.social-icon:hover {
+  transform: scale(1.1);
+}
+
+.social-icon img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.social-link-text {
+  text-decoration: none;
+  color: #0073b1;
+  padding: 0.5rem 1rem;
+  border: 1px solid #0073b1;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.social-link-text:hover {
+  background-color: #e8f5ff;
+}
+
+.instagram-text {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.no-social-links {
+  color: #666;
+  font-style: italic;
+  font-size: 0.9rem;
+}

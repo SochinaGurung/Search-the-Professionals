@@ -1,0 +1,90 @@
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 30px;
+  background: linear-gradient(135deg, #0073b1, #0e76a8);
+  color: white;
+  padding: 50px 80px 20px;
+  min-height: 150px;
+}
+
+.footer-about p {
+  max-width: 300px;
+  line-height: 1.6;
+  color: white;
+}
+
+.footer-links a:hover {
+  color: #00bcd4;
+}
+
+.footer-contact p, .footer-contact a {
+  color: #ccc;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.our-socials{
+  color: #ccc;
+  margin-right: 12px;
+  font-size: 18px;
+  transition: color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.social-icons .icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, background 0.3s ease;
+  padding: 10px;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  text-decoration: none;
+}
+
+.social-icons .icon:first-child {
+  /* Facebook - blend Facebook blue with footer background */
+  background: linear-gradient(135deg, #1877F2 30%, #0073b1 70%);
+}
+
+.social-icons .icon:last-child {
+  /* LinkedIn - blend LinkedIn blue with footer background */
+  background: linear-gradient(135deg, #0077B5 30%, #0073b1 70%);
+}
+
+.social-icons .icon:hover {
+  transform: scale(1.15);
+}
+
+.social-icons .icon:first-child:hover {
+  background: linear-gradient(135deg, #1877F2 40%, #0073b1 60%);
+}
+
+.social-icons .icon:last-child:hover {
+  background: linear-gradient(135deg, #0077B5 40%, #0073b1 60%);
+}
+
+.ughh{
+    display: flex;
+    gap: 30px;
+}
+.social-icons img {
+  width: 30px; 
+  height: 30px;
+  object-fit: contain;
+  filter: brightness(1.2);
+}
+
+.footer-bottom {
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+  color: #cbd5e1;
+  background: linear-gradient(135deg, #005885, #0073b1);
+}

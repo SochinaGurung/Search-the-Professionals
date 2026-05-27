@@ -8,7 +8,6 @@ interface AboutProps {
 }
 
 export default function About({ aboutText, isCurrentUser, onSave }: AboutProps) {
-  const [isEditing, setIsEditing] = useState(false);
   const [newAbout, setNewAbout] = useState(aboutText || '');
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -23,7 +22,6 @@ export default function About({ aboutText, isCurrentUser, onSave }: AboutProps) 
     setError(null);
     try {
       await onSave(newAbout);
-      setIsEditing(false);
     } catch (e) {
       setError('Failed to save changes.');
       console.error(e);
@@ -36,27 +34,24 @@ export default function About({ aboutText, isCurrentUser, onSave }: AboutProps) 
     <div className="profile-section">
       <div className="about-header">
         <h3>About</h3>
-        {isCurrentUser && (
-          <button className="edit-btn" onClick={() => setIsEditing(true)}>✏️</button>
-        )}
       </div>
 
-
-      {isEditing ? (
+      {isCurrentUser ? (
         <>
           <textarea
             value={newAbout}
             onChange={(e) => setNewAbout(e.target.value)}
             rows={5}
             disabled={isSaving}
+            placeholder="Tell us about yourself..."
+            className="about-textarea"
           />
-          <button onClick={handleSave} disabled={isSaving}>
-            {isSaving ? 'Saving...' : 'Save'}
-          </button>
-          <button onClick={() => setIsEditing(false)} disabled={isSaving}>
-            Cancel
-          </button>
-          {error && <p style={{ color: 'red' }}>{error}</p>}
+          <div className="about-actions">
+            <button onClick={handleSave} disabled={isSaving} className="save-btn">
+              {isSaving ? 'Saving...' : 'Save'}
+            </button>
+            {error && <p className="error-message">{error}</p>}
+          </div>
         </>
       ) : (
         <p>{aboutText || 'No information available'}</p>

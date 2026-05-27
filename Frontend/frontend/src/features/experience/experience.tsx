@@ -21,7 +21,6 @@ export default function Experience({
   onAdd,
   onEdit,
 }: ExperienceProps) {
-  const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState<ExperienceItem>({
     company: "",
     position: "",
@@ -56,7 +55,6 @@ export default function Experience({
       }
       setFormData({ company: "", position: "", duration: "" });
       setEditId(null);
-      setShowForm(false);
     } catch (err) {
       console.error("Failed to save experience", err);
       setError("Something went wrong while saving experience.");
@@ -68,7 +66,6 @@ export default function Experience({
   const handleEditClick = (exp: ExperienceItem) => {
     setFormData({ company: exp.company, position: exp.position, duration: exp.duration });
     setEditId(exp._id || null);
-    setShowForm(true);
   };
 
   const handleCancel = () => {
@@ -76,7 +73,6 @@ export default function Experience({
     setError(null);
     setSuccess(null);
     setEditId(null);
-    setShowForm(false);
   };
 
   return (
@@ -84,19 +80,14 @@ export default function Experience({
       {/* Header */}
       <div className="experience-header">
         <h3>Work Experience</h3>
-        {isCurrentUser && !showForm && (
-          <button className="add-experience-btn small-btn" onClick={() => setShowForm(true)}>
-            + Add Experience
-          </button>
-        )}
       </div>
 
       {/* Feedback */}
       {error && <p className="error">{error}</p>}
       {success && <p className="success">{success}</p>}
 
-      {/* Form */}
-      {showForm && (
+      {/* Form - Always visible for current user */}
+      {isCurrentUser && (
         <form className="experience-form small-form" onSubmit={handleSave}>
           <input
             className="small-input"
@@ -106,6 +97,7 @@ export default function Experience({
             value={formData.company}
             onChange={handleChange}
             placeholder="Company"
+            required
           />
           <input
             className="small-input"
@@ -115,6 +107,7 @@ export default function Experience({
             value={formData.position}
             onChange={handleChange}
             placeholder="Position"
+            required
           />
           <input
             className="small-input"
@@ -123,34 +116,47 @@ export default function Experience({
             type="text"
             value={formData.duration}
             onChange={handleChange}
-            placeholder="Duration"
+            placeholder="Duration (e.g., Jan 2020 - Present)"
+            required
           />
 
           <div className="form-buttons">
             <button type="submit" className="submit-btn small-btn" disabled={isSaving}>
-              {editId ? "Update" : "Add"}
+              {editId ? "Update" : "Add Experience"}
             </button>
-            <button type="button" className="cancel-btn small-btn" onClick={handleCancel}>
-              Cancel
-            </button>
+            {editId && (
+              <button type="button" className="cancel-btn small-btn" onClick={handleCancel}>
+                Cancel
+              </button>
+            )}
           </div>
         </form>
       )}
 
       {/* List */}
       <div className="experience-list">
-        {experiences.map((exp) => (
-          <div key={exp._id || exp.company} className="experience-item">
-            <p>
-              <strong>{exp.company}</strong> - {exp.position} ({exp.duration})
-            </p>
-            {isCurrentUser && (
-              <button className="edit-btn" onClick={() => handleEditClick(exp)}>
-                ✏️
-              </button>
-            )}
-          </div>
-        ))}
+        {experiences.length > 0 ? (
+          experiences.map((exp) => (
+            <div key={exp._id || exp.company} className="experience-item">
+              <div className="experience-content">
+                <p>
+                  <strong>{exp.company}</strong> - {exp.position} ({exp.duration})
+                </p>
+              </div>
+              {isCurrentUser && (
+                <button 
+                  className="edit-exp-btn" 
+                  onClick={() => handleEditClick(exp)}
+                  title="Edit experience"
+                >
+                  ✏️
+                </button>
+              )}
+            </div>
+          ))
+        ) : (
+          isCurrentUser && <p className="no-experience">Add your work experience above</p>
+        )}
       </div>
     </div>
   );

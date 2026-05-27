@@ -43,7 +43,8 @@ const userSchema = new Schema({
     skills:[String],
 
     experience: [ExperienceSchema],
-
+    contact: String,
+    
     createdAt:{
         type:Date,
         default: Date.now
@@ -52,10 +53,17 @@ const userSchema = new Schema({
         type: Boolean,
         default: false
     },
-    profilePicture:{
-        url:{
-            type:String,
-        }
+    profilePicture: {
+        url: { type: String, default: "" },
+        public_id: { type: String, default: "" }
+    },
+    linkedIn: {
+        type: String,
+        default: ""
+    },
+    instagram: {
+        type: String,
+        default: ""
     }
 });
 
